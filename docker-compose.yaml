@@ -1,0 +1,34 @@
+version: "3.8"
+
+services:
+  mongodb:
+    image: mongo:latest
+    container_name: mongodb
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: admin
+      MONGO_INITDB_ROOT_PASSWORD: admin123
+    networks:
+      - task_manager_network
+    volumes:
+      - task-manager-data:/data/db
+
+  task-manager:
+    depends_on:
+      - mongodb
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: task-manager
+    container_name: task_manager
+    ports:
+      - "8000:8000"
+    networks:
+      - task_manager_network
+
+networks:
+  task_manager_network:
+    name: task_manager_network
+
+volumes:
+  task-manager-data:
+    name: task-manager-data
