@@ -1,0 +1,38 @@
+name: "Analyze Pull Request with ChatGPT"
+
+on:
+  pull_request:
+    branches:
+      - master
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  analyze-code-with-chatgpt:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history for git blame analysis
+
+      - name: Extract PR diff
+        run: git diff ${{  github.event.pull_request.base.sha  }} ${{  github.event.pull_request.head.sha  }} > pr.diff  # generates a diff file that contains the differences between the base and head commits of the pull request.
+
+      - name: Make script executable
+        run: chmod +x ./scripts/analyze-code.sh
+
+      - name: Analyze code with ChatGPT
+        env:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+        run: ./scripts/analyze-code.sh $OPENAI_API_KEY $GITHUB_TOKEN $REPO $PR_NUMBER
+        shell: bash
