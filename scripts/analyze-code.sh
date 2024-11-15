@@ -23,7 +23,6 @@ DIFF_CONTENT=$(cat pr_diff.txt)
 
 # Combine the instructions and the diff content into a single prompt
 FULL_PROMPT="$INSTRUCTIONS\n\n$DIFF_CONTENT"
-echo "$FULL_PROMPT"
 
 # Create a JSON payload for the OpenAI API request
 MESSAGES_JSON=$(jq -n --arg body "$FULL_PROMPT" '[{"role": "user", "content": $body}]')
