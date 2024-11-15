@@ -40,11 +40,11 @@ SUMMARY=$(echo "$RESPONSE" | jq -r '.choices[0].message.content')
 echo "$SUMMARY" > summary.txt
 
 # a JSON payload for the GitHub API request to post a comment
-comment_body=$(jq -n --arg body "$(cat summary.txt)" '{body: $body}')
+COMMENT_BODY=$(jq -n --arg body "$(cat summary.txt)" '{body: $body}')
 
 # Post the summary as a comment on the pull request using the GitHub API
 curl -s -X POST \
   -H "Authorization: Bearer $GITHUB_TOKEN" \
   -H "Content-Type: application/json" \
-  -d "$comment_body" \
+  -d "$COMMENT_BODY" \
   "https://api.github.com/repos/$REPO/issues/$PR_NUMBER/comments"
