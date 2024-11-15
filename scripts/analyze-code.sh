@@ -4,7 +4,15 @@
 set -e
 
 # Define the instructions to be sent to ChatGPT
-INSTRUCTIONS="Based on the code diff below, please provide a summary of the major insights derived. Also, check for any potential issues or improvements. The response should be a concise summary without any additional formatting, markdown, or characters outside the summary text."
+INSTRUCTIONS="Here is a code diff for a Flask web app that handles CRUD operations against the Mongo DB.
+  The diff includes changes made to the original code derived from the head branch.
+
+  The goal is to improve code readability and ensure edge case coverage.
+
+  Please review the diff for:
+  - Functionality (does it work as intended?).
+  - Adherence to Python best practices (e.g., PEP 8).
+  - Potential security or performance issues."
 
 # Read the PR diff content from the workflow
 DIFF_CONTENT=$(cat pr_diff.txt)
