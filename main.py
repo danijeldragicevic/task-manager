@@ -111,7 +111,7 @@ def delete_task(id):
     return jsonify({"message": "Task deleted"}), 200
 
 # Run the app
-if __name__ == "__main__":
+if __name__ == "__main__XXXX":
     try:
         app.run(debug=True, host=get_config_value('APP_HOST'), port=get_config_value('APP_PORT'))
     except ValueError as e:
