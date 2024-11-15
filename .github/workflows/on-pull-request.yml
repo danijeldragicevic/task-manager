@@ -2,8 +2,6 @@ name: "Analyze Pull Request with ChatGPT"
 
 on:
   pull_request:
-    branches:
-      - master
     types:
       - opened
       - reopened
