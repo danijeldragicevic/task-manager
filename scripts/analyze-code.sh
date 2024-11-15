@@ -4,21 +4,22 @@
 set -e
 
 # Define the instructions to be sent to ChatGPT
-INSTRUCTIONS="Here is a code diff for a Flask web app that handles CRUD operations against the Mongo DB.
-  The diff includes changes made to the original code derived from the head branch.
-
-  The goal is to improve code readability and ensure edge case coverage.
-
-  Please review the diff for:
-  - Functionality (does it work as intended?).
-  - Adherence to Python best practices (e.g., PEP 8).
-  - Potential security or performance issues."
+INSTRUCTIONS="Context:\n
+  This code is part of a Flask application that manages tasks stored in a MongoDB database.
+  The app provides basic CRUD endpoints for tasks (Create, Read, Update, Delete).
+  Here is a code diff that includes changes made to the original code derived from the head branch.\n\n
+  Goal:\n
+  Please review the provided code diff to ensure:\n
+  - Functionality: Does the refactored code work correctly for the described scenarios?\n
+  - Python Best Practices: Is the code clear, maintainable, and consistent with Python and Flask conventions?\n
+  - Error Handling and Edge Cases: Are there any missed scenarios or better ways to manage exceptions?\n"
 
 # Read the PR diff content from the workflow
 DIFF_CONTENT=$(cat pr_diff.txt)
 
 # Combine the instructions and the diff content into a single prompt
 FULL_PROMPT="$INSTRUCTIONS\n\n$DIFF_CONTENT"
+echo "$FULL_PROMPT"
 
 # Create a JSON payload for the OpenAI API request
 MESSAGES_JSON=$(jq -n --arg body "$FULL_PROMPT" '[{"role": "user", "content": $body}]')
