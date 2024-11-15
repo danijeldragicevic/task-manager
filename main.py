@@ -110,10 +110,19 @@ def delete_task(id):
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task deleted"}), 200
 
+# Endpoint to check application health
+@app.route("/ping", methods=["GET"])
+def get_app_info():
+    app_info = {
+        "name": get_config_value('APP_NAME'),
+        "version": get_config_value('APP_VERSION')
+    }
+    return jsonify(app_info), 200
+
 # Run the app
 if __name__ == "__main__":
     try:
-        app.run(debug=True, host=get_config_value('APP_HOST'), port=get_config_value('APP_PORT'))
+        app.run(debug=False, host=get_config_value('APP_HOST'), port=get_config_value('APP_PORT'))
     except ValueError as e:
         print(f"Configuration error: {e}")
         os._exit(1)
