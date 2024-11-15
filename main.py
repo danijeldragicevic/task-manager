@@ -55,7 +55,10 @@ def create_task():
         "title": data["title"],
         "description": data["description"]
     }
-    tasks_collection.insert_one(task)
+    try:
+        tasks_collection.insert_one(task)
+    except errors.PyMongoError as e:
+        return jsonify({"error": str(e)}), 500
     return jsonify({"message": "Task created", "task": serialize_task(task)}), 201
 
 # Endpoint to list all tasks
