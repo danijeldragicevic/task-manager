@@ -4,19 +4,7 @@
 set -e
 
 # Define the instructions to be sent to ChatGPT
-INSTRUCTIONS="
-Context:
-  This code is part of a Flask application that manages tasks stored in a MongoDB database.
-  The app provides basic CRUD endpoints for tasks (Create, Read, Update, Delete).
-  Here is a code diff that includes changes made to the original code derived from the head branch.
-
-Goal:
-  Please review the provided code diff to ensure:
-  - Functionality: Does the refactored code work correctly for the described scenarios?
-  - Python Best Practices: Is the code clear, maintainable, and consistent with Python and Flask conventions?
-  - Error Handling and Edge Cases: Are there any missed scenarios or better ways to manage exceptions?
-
-Diff:"
+INSTRUCTIONS="Based on the code diff below, please provide a summary of the major insights derived. Also, check for any potential issues or improvements. The response should be a concise summary without any additional formatting, markdown, or characters outside the summary text."
 
 # Read the PR diff content from the workflow
 DIFF_CONTENT=$(cat pr_diff.txt)
