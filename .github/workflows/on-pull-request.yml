@@ -20,17 +20,10 @@ jobs:
         with:
           fetch-depth: 0 # Fetch all history for git blame analysis
 
-      - name: Extract PR diff
-        run: git diff ${{  github.event.pull_request.base.sha  }} ${{  github.event.pull_request.head.sha  }} > pr_diff.txt  # generates a diff file that contains the differences between the base and head commits of the pull request.
-
-      - name: Make script executable
-        run: chmod +x ./scripts/analyze-code.sh
-
-      - name: Analyze code with ChatGPT
-        env:
+      - name: Analyze Pull Request with ChatGPT
+        uses: danijeldragicevic/openai-pr-review-action@v1
+        with:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          REPO: ${{ github.repository }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: ./scripts/analyze-code.sh $OPENAI_API_KEY $GITHUB_TOKEN $REPO $PR_NUMBER
-        shell: bash
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.issue.number }}
