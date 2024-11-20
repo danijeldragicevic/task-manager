@@ -113,7 +113,7 @@ def delete_task(id):
 # Run the app
 if __name__ == "__main__":
     try:
-        app.run(debug=True, host=get_config_value('APP_HOST'), port=get_config_value('APP_PORT'))
+        app.run(debug=False, host=get_config_value('APP_HOSTX'), port=get_config_value('APP_PORTX'))
     except ValueError as e:
         print(f"Configuration error: {e}")
         os._exit(1)
