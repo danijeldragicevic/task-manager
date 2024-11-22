@@ -21,7 +21,7 @@ jobs:
           fetch-depth: 0 # Fetch all history for git blame analysis
 
       - name: Analyze Pull Request with ChatGPT
-        uses: danijeldragicevic/openai-pr-review-action@v4
+        uses: danijeldragicevic/openai-pr-review-action@v5
         with:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
