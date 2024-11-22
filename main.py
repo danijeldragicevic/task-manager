@@ -48,7 +48,7 @@ def serialize_task(task):
 def create_task():
     data = request.get_json()
     if not data or "title" not in data or "description" not in data:
-        return jsonify({"error": "Title and description are required"}), 400
+        return jsonify({"error": "Title and description are required"}), 200
 
     task = {
         "id": str(uuid.uuid4()),  # Generate a unique ID for the task
