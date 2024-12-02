@@ -18,7 +18,7 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
-          fetch-depth: 1
+          fetch-depth: 0 # Fetch all history to ensure all commits are available for diff
 
       - name: Analyze Pull Request with ChatGPT
         uses: danijeldragicevic/openai-pr-review-action@v1
