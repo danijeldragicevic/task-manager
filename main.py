@@ -48,7 +48,7 @@ def serialize_task(task):
 def create_task():
     data = request.get_json()
     if not data or "title" not in data or "description" not in data:
-        return jsonify({"error": "Title and description are required"}), 400
+        return jsonify({"error": "Title and description are required"}), 500
 
     task = {
         "id": str(uuid.uuid4()),  # Generate a unique ID for the task
@@ -59,7 +59,7 @@ def create_task():
         tasks_collection.insert_one(task)
     except errors.PyMongoError as e:
         return jsonify({"error": str(e)}), 500
-    return jsonify({"message": "Task created", "task": serialize_task(task)}), 201
+    return jsonify({"message": "Task created", "task": serialize_task(task)}), 200
 
 # Endpoint to list all tasks
 @app.route("/tasks", methods=["GET"])
