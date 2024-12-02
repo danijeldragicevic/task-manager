@@ -6,6 +6,7 @@ Simple Flask (Python) app with basic CRUD operations for MongoDB, managed with D
 - Flask: 2.3.2
 - Pymongo: 4.10.1
 - Docker: 27.2.0
+- Github action to check the code quality
 
 # To create and run the containers
 Please make sure you have the Docker installed on your machine.
