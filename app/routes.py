@@ -1,39 +1,7 @@
-from flask import Flask, jsonify, request
-from pymongo import MongoClient, errors
+from flask import jsonify, request
+from app import app, tasks_collection
 import uuid
-import config
-import os
-
-app = Flask(__name__)
-
-# Function to get configuration values with error handling
-def get_config_value(key, default=None):
-    try:
-        value = getattr(config, key)
-        if value is None:
-            raise ValueError(f"Configuration value for {key} is missing")
-        return value
-    except AttributeError:
-        if default is not None:
-            return default
-        raise ValueError(f"Configuration value for {key} is missing")
-
-# Connect to MongoDB using configuration from config.py
-try:
-    client = MongoClient(
-        host=get_config_value('MONGO_HOST'),
-        port=get_config_value('MONGO_PORT'),
-        username=get_config_value('MONGO_USERNAME'),
-        password=get_config_value('MONGO_PASSWORD')
-    )
-    db = client.task_manager
-    tasks_collection = db.tasks_collection
-except ValueError as e:
-    print(f"Configuration error: {e}")
-    os._exit(1)
-except errors.PyMongoError as e:
-    print(f"Database connection error: {e}")
-    os._exit(1)
+from pymongo import errors
 
 # Convert MongoDB ObjectId to JSON serializable format
 def serialize_task(task):
@@ -43,7 +11,6 @@ def serialize_task(task):
         "description": task["description"]
     }
 
-# Endpoint to create a new task
 @app.route("/tasks", methods=["POST"])
 def create_task():
     data = request.get_json()
@@ -61,7 +28,6 @@ def create_task():
         return jsonify({"error": str(e)}), 500
     return jsonify({"message": "Task created", "task": serialize_task(task)}), 201
 
-# Endpoint to list all tasks
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
     try:
@@ -70,7 +36,6 @@ def list_tasks():
         return jsonify({"error": str(e)}), 500
     return jsonify(tasks), 200
 
-# Endpoint to get a single task by ID
 @app.route("/tasks/<id>", methods=["GET"])
 def get_task(id):
     try:
@@ -81,7 +46,6 @@ def get_task(id):
         return jsonify({"error": "Task not found"}), 404
     return jsonify(serialize_task(task)), 200
 
-# Endpoint to update a task by ID
 @app.route("/tasks/<id>", methods=["PUT"])
 def update_task(id):
     data = request.get_json()
@@ -99,7 +63,6 @@ def update_task(id):
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task updated"}), 200
 
-# Endpoint to delete a task by ID
 @app.route("/tasks/<id>", methods=["DELETE"])
 def delete_task(id):
     try:
@@ -109,11 +72,3 @@ def delete_task(id):
     if result.deleted_count == 0:
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task deleted"}), 200
-
-# Run the app
-if __name__ == "__main__":
-    try:
-        app.run(debug=True, host=get_config_value('APP_HOST'), port=get_config_value('APP_PORT'))
-    except ValueError as e:
-        print(f"Configuration error: {e}")
-        os._exit(1)
