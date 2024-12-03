@@ -10,12 +10,15 @@ ENV PYTHONUNBUFFERED 1
 # Set the working directory
 WORKDIR /app
 
+# Set the Python path to include the /app directory
+ENV PYTHONPATH=/app:$PYTHONPATH
+
 # Copy the requirements.txt file and install the dependencies
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code into the container
-COPY .  /app/
+COPY .  .
 
 # Expose the application port
 EXPOSE 8000
