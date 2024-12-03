@@ -15,10 +15,10 @@ COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the entire application code into the container
-COPY .  /app/
+COPY .  .
 
 # Expose the application port
 EXPOSE 8000
 
-# Command to run the application
-CMD ["python", "app/main.py"]
+# Run the tests and then start the application
+CMD ["sh", "-c", "pytest tests && flask run --host=0.0.0.0 --port=8000"]
