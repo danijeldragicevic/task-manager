@@ -73,11 +73,11 @@ def delete_task(id):
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task deleted"}), 200
 
-# @app.route("/healht", methods=["GET"])
-# def health_check():
-#     health_info = {
-#         "status": "up",
-#         "version": app.config.get("APP_VERSION"),
-#         "environment": app.config.get("APP_ENV")
-#     }
-#     return jsonify(health_info), 200
+@app.route("/healht", methods=["GET"])
+def health_check():
+    health_info = {
+        "status": "up",
+        "version": app.config.get("APP_VERSION"),
+        "environment": app.config.get("APP_ENV")
+    }
+    return jsonify(health_info), 200
