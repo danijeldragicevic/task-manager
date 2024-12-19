@@ -62,13 +62,3 @@ def update_task(id):
     if result.matched_count == 0:
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task updated"}), 200
-
-@app.route("/tasks/<id>", methods=["DELETE"])
-def delete_task(id):
-    try:
-        result = tasks_collection.delete_one({"id": id})
-    except errors.PyMongoError as e:
-        return jsonify({"error": str(e)}), 500
-    if result.deleted_count == 0:
-        return jsonify({"error": "Task not found"}), 404
-    return jsonify({"message": "Task deleted"}), 200
