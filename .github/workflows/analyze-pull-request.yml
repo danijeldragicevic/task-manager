@@ -1,0 +1,31 @@
+name: "Analyze Pull Request with OpenAI"
+
+on:
+  pull_request:
+    types:
+      - opened
+      - reopened
+      - synchronize
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  analyze-code:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # Fetch all history to ensure all commits are available for diff
+
+      - name: Analyze Pull Request with OpenAI
+        uses: danijeldragicevic/openai-pr-review-action@v1
+        with:
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPOSITORY: ${{ github.repository }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          GPT_MODEL: 'gpt-4o-mini'
+          MAX_TOKENS: '500'
