@@ -27,5 +27,5 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPOSITORY: ${{ github.repository }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
-          GPT_MODEL: '1o-mini'
+          GPT_MODEL: 'o1-mini'
           MAX_TOKENS: '500'
