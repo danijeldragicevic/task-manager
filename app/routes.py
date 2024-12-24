@@ -26,7 +26,7 @@ def create_task():
         tasks_collection.insert_one(task)
     except errors.PyMongoError as e:
         return jsonify({"error": str(e)}), 500
-    return jsonify({"message": "Task created", "task": serialize_task(task)}), 201
+    return jsonify({"message": "Task created", "task": serialize_task(task)}), 200
 
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
@@ -62,3 +62,12 @@ def update_task(id):
     if result.matched_count == 0:
         return jsonify({"error": "Task not found"}), 404
     return jsonify({"message": "Task updated"}), 200
+
+@app.route("/healht", methods=["GET"])
+def health_check():
+    health_info = {
+        "status": "up",
+        "version": app.config.get("APP_VERSION"),
+        "environment": app.config.get("APP_ENV")
+    }
+    return jsonify(health_info), 200
