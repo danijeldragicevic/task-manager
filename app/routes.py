@@ -26,7 +26,7 @@ def create_task():
         tasks_collection.insert_one(task)
     except errors.PyMongoError as e:
         return jsonify({"error": str(e)}), 500
-    return jsonify({"message": "Task created", "task": serialize_task(task)}), 201
+    return jsonify({"message": "Task created", "task": serialize_task(task)}), 200
 
 @app.route("/tasks", methods=["GET"])
 def list_tasks():
