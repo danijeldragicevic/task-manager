@@ -44,7 +44,7 @@ def get_task(id):
         return jsonify({"error": str(e)}), 500
     if task is None:
         return jsonify({"error": "Task not found"}), 404
-    return jsonify(serialize_task(task)), 200
+    return jsonify(serialize_task(task)), 300
 
 @app.route("/tasks/<id>", methods=["PUT"])
 def update_task(id):
