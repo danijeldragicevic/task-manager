@@ -46,19 +46,3 @@ def get_task(id):
         return jsonify({"error": "Task not found"}), 404
     return jsonify(serialize_task(task)), 200
 
-@app.route("/tasks/<id>", methods=["PUT"])
-def update_task(id):
-    data = request.get_json()
-    update_fields = {}
-    if "title" in data:
-        update_fields["title"] = data["title"]
-    if "description" in data:
-        update_fields["description"] = data["description"]
-
-    try:
-        result = tasks_collection.update_one({"id": id}, {"$set": update_fields})
-    except errors.PyMongoError as e:
-        return jsonify({"error": str(e)}), 500
-    if result.matched_count == 0:
-        return jsonify({"error": "Task not found"}), 404
-    return jsonify({"message": "Task updated"}), 200
